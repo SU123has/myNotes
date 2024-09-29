@@ -1,15 +1,17 @@
 import { Badge, Button, Col, Row, Stack } from "react-bootstrap";
-import { Link, useNavigate, useOutletContext } from "react-router-dom";
+import { Link, useOutletContext } from "react-router-dom";
 import { Note } from "../App";
 import ReactMarkdown from "react-markdown";
+import ConfirmDeleteModal from "./ConfirmDeleteModal";
+import { useState } from "react";
 
 type ShowNoteProps = {
   onDelete: (id: string) => void;
 };
 
 const ShowNote = ({ onDelete }: ShowNoteProps) => {
-  const navigate = useNavigate();
   const note = useOutletContext<Note>();
+  const [deleteModalIsOpen, setDeleteModalIsOpen] = useState<boolean>(false);
   return (
     <>
       <Row className="align-items-center mb-4">
@@ -33,8 +35,7 @@ const ShowNote = ({ onDelete }: ShowNoteProps) => {
             <Button
               variant="outline-danger"
               onClick={() => {
-                onDelete(note.id);
-                navigate("/");
+                setDeleteModalIsOpen(true);
               }}
             >
               Delete
@@ -48,6 +49,14 @@ const ShowNote = ({ onDelete }: ShowNoteProps) => {
       <ReactMarkdown className="border rounded p-3">
         {note.markdown}
       </ReactMarkdown>
+      <ConfirmDeleteModal
+        onDelete={onDelete}
+        noteId={note.id}
+        showModal={deleteModalIsOpen}
+        handleClose={() => {
+          setDeleteModalIsOpen(false);
+        }}
+      />
     </>
   );
 };
