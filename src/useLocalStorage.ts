@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 //this custom hook helps in synchronising the state with localStorage
 
+//using generics
 export function useLocalStorage<T>(key: string, initialValue: T | (() => T)) {
   //if you pass a function as initialState, it will be treated as an initializer function
   //It should take no arguments, and return a value of any type,

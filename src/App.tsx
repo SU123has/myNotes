@@ -43,6 +43,7 @@ function App() {
   const [tags, setTags] = useLocalStorage<Tag[]>("TAGS", []);
 
   //notes store notes along with tags (enriched format)
+  //type inference
   const notesWithTags = useMemo(() => {
     return notes.map((note) => {
       return {
@@ -53,7 +54,7 @@ function App() {
   }, [notes, tags]);
   //runs only when notes or tags state have changed
 
-  function onCreateNote({ tags, ...data }: NoteData) {
+  function onCreateNote({ tags, ...data }: NoteData): void {
     //need to convert NoteData into RawNote
     setNotes((prevNotes) => [
       ...prevNotes,
@@ -63,11 +64,11 @@ function App() {
   }
 
   //for the purpose of synchronising with localStorage
-  function addTag(tag: Tag) {
+  function addTag(tag: Tag): void {
     setTags((prevTags) => [...prevTags, tag]);
   }
 
-  function onUpdateNote(id: string, { tags, ...data }: NoteData) {
+  function onUpdateNote(id: string, { tags, ...data }: NoteData): void {
     //similar to onCreateNote function
     setNotes((prevNotes) => {
       return prevNotes.map((note) => {
@@ -85,14 +86,14 @@ function App() {
     toast.success("Note updated successfully");
   }
 
-  function onDeleteNote(id: string) {
+  function onDeleteNote(id: string): void {
     setNotes((prevNotes) => {
       return prevNotes.filter((note) => note.id !== id);
     });
     toast.error("Note deleted");
   }
 
-  function onUpdateTag(id: string, label: string) {
+  function onUpdateTag(id: string, label: string): void {
     setTags((prevTags) => {
       return prevTags.map((tag) => {
         if (tag.id === id) {
@@ -104,7 +105,7 @@ function App() {
     });
   }
 
-  function onDeleteTag(id: string) {
+  function onDeleteTag(id: string): void {
     setTags((prevTags) => {
       return prevTags.filter((tag) => tag.id !== id);
     });
